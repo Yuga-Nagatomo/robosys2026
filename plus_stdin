@@ -1,0 +1,9 @@
+#!/usr/bin/python3
+import sys
+
+x = 0.0                    #合計を入れる変数を0で初期化
+for line in sys.stdin:     #[1:]でコマンド名（0番）を除く
+    x += float(line)          #x = x + float(n) と同じ
+
+print(x)
+
