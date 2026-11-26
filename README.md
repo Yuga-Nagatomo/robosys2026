@@ -33,7 +33,7 @@ chmod +x calorie
 料理名を標準入力から入力します。
 
 ```bash
-echo "ラーメン" | ./calorie
+$ echo "ラーメン" | ./calorie
 ```
 
 実行結果：
@@ -70,7 +70,7 @@ echo "ラーメン" | ./calorie
 以下のコマンドでテストを実行できます。
 
 ```bash
-bash test.bash
+$ bash test.bash
 ```
 
 すべてのテストに成功すると `OK` と表示されます。
