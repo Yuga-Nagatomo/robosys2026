@@ -18,14 +18,14 @@
 GitHubからリポジトリを取得します。
 
 ```bash
-git clone https://github.com/Yuga-Nagatomo/robosys2026.git
-cd robosys2026
+$ git clone https://github.com/Yuga-Nagatomo/robosys2026.git
+$ cd robosys2026
 ```
 
 実行権限を設定します。
 
 ```bash
-chmod +x calorie
+$ chmod +x calorie
 ```
 
 ## 使用方法
