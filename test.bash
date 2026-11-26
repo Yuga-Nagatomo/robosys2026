@@ -1,31 +1,40 @@
 #!/bin/bash
-#!/bin/bash
 # SPDX-FileCopyrightText: 2026 Yuga Nagatomo
 # SPDX-License-Identifier: BSD-3-Clause
- 
-ng () {                               # 関数ngの定義（P18と同じ）
-          echo ${1}行目のテスト失敗
-          res=1                          # 失敗したことを記録
+
+ng () {
+    echo "${1}行目のテスト失敗"
+    res=1
 }
 
-res=0                                  # 0: 失敗なし（ngが呼ばれると1になる）
-out=$(seq 5 | ./plus)                  # 表の1行目: plusの出力を変数outに記録
-[ "${out}" = 15 ] || ng "$LINENO"      # 期待する出力（15）でなければngを呼び出す
-[ "${res}" = 0 ] && echo OK            # 通ったのが（人間に）分かるように表
-exit $res                              # 終了ステータスを返して終了（機械向け）
+res=0
 
-out=$(seq 5 | ./plus)
-[ "$?" = 0 ]      || ng "$LINENO"
-[ "${out}" = 15 ] || ng "$LINENO"
+### NORMAL INPUT ###
+out=$(echo "ラーメン" | ./calorie 2>/dev/null)
+expected="醤油ラーメン,470
+味噌ラーメン,550
+豚骨ラーメン,600
+塩ラーメン,450"
 
-### STRANGE INPUT ###
-out=$(echo あ | ./plus)           #計算できない値を入力してみる
-[ "$?" = 1 ]      || ng "$LINENO" #終了ステータスが1なのを確認
-[ "${out}" = "" ] || ng "$LINENO" #上の行と入れ替えるとダメ（なぜ？）
+[ "${out}" = "${expected}" ] || ng "$LINENO"
 
-out=$(echo | ./plus)              #なにも入力しない
-[ "$?" = 1 ]      || ng "$LINENO" #これも異常終了する
+### UNKNOWN INPUT ###
+out=$(echo "寿司" | ./calorie 2>/dev/null)
+status=$?
+
+[ "${status}" = 1 ] || ng "$LINENO"
 [ "${out}" = "" ] || ng "$LINENO"
+
+### EMPTY INPUT ###
+out=$(echo "" | ./calorie 2>/dev/null)
+status=$?
+
+[ "${status}" = 1 ] || ng "$LINENO"
+[ "${out}" = "" ] || ng "$LINENO"
+
+### STANDARD ERROR ###
+err=$(echo "寿司" | ./calorie 2>&1 >/dev/null)
+[ "${err}" = "該当する料理が見つかりません。" ] || ng "$LINENO"
 
 [ "${res}" = 0 ] && echo OK
 exit $res
